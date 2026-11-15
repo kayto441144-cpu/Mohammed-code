@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>محمد كود</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1b1f2a;--mut:#6b7280;--pri:#4f46e5;--prx:#fff;--bd:#e3e6ee;--me:#4f46e5;--bot:#eceefa;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1b1e29;--tx:#eceef6;--mut:#9aa1b2;--pri:#818cf8;--prx:#12141c;--bd:#2c3040;--me:#4f46e5;--bot:#262a3a}}
+:root[data-theme="dark"]{--bg:#12141c;--card:#1b1e29;--tx:#eceef6;--mut:#9aa1b2;--pri:#818cf8;--prx:#12141c;--bd:#2c3040;--me:#4f46e5;--bot:#262a3a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6}
+.app{max-width:720px;margin:0 auto;padding:12px 14px 40px}
+h1{font-size:22px;margin:8px 0 2px}
+.sub{color:var(--mut);font-size:13px;margin:0 0 12px}
+.tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:4px;margin-bottom:12px}
+.tabs button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-size:14px;padding:9px 4px;border-radius:10px;cursor:pointer}
+.tabs button.on{background:var(--pri);color:var(--prx);font-weight:600}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px}
+.panel{display:none}.panel.on{display:block}
+#log{height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
+.m{max-width:86%;padding:9px 13px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word;font-size:15px}
+.m.u{align-self:flex-start;background:var(--me);color:#fff;border-bottom-right-radius:4px}
+.m.b{align-self:flex-end;background:var(--bot);border-bottom-left-radius:4px}
+.row{display:flex;gap:8px;margin-top:10px}
+textarea,select{width:100%;font:inherit;font-size:15px;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px}
+textarea{resize:vertical;min-height:44px}
+.btn{border:0;background:var(--pri);color:var(--prx);font:inherit;font-weight:600;padding:10px 18px;border-radius:12px;cursor:pointer;white-space:nowrap}
+.btn:disabled{opacity:.5}
+.out{margin-top:10px;white-space:pre-wrap;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px;min-height:48px;font-size:15px}
+.lbl{font-size:13px;color:var(--mut);margin:10px 0 4px;display:block}
+img.pv{max-width:100%;max-height:220px;border-radius:12px;margin-top:8px;display:block}
+.err{color:#dc2626;font-size:13px;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>محمد كود</h1>
+  <p class="sub">مساعدك الذكي: دردشة، كتابة، وتحليل ملفات</p>
+  <div class="tabs" id="tabs">
+    <button class="on" data-t="chat">دردشة</button>
+    <button data-t="write">كتابة</button>
+    <button data-t="analyze">تحليل</button>
+  </div>
+
+  <div class="panel on card" id="chat">
+    <div id="log"><div class="m b">أهلاً! أنا محمد كود. كيف أساعدك اليوم؟</div></div>
+    <div class="row">
+      <textarea id="ci" rows="1" placeholder="اكتب رسالتك..."></textarea>
+      <button class="btn" id="cs">إرسال</button>
+    </div>
+    <div class="err" id="ce"></div>
+  </div>
+
+  <div class="panel card" id="write">
+    <label class="lbl">ماذا تريد؟</label>
+    <select id="wm">
+      <option value="لخّص النص التالي بإيجاز ووضوح">تلخيص</option>
+      <option value="حسّن صياغة النص التالي مع الحفاظ على معناه">تحسين الصياغة</option>
+      <option value="صحّح الأخطاء الإملائية والنحوية في النص التالي">تدقيق لغوي</option>
+      <option value="ترجم النص التالي إلى الإنجليزية إن كان عربياً، وإلى العربية إن كان غير ذلك">ترجمة</option>
+      <option value="أعد كتابة النص التالي بأسلوب رسمي ومهني">أسلوب رسمي</option>
+    </select>
+    <label class="lbl">النص</label>
+    <textarea id="wi" rows="6" placeholder="الصق نصك هنا"></textarea>
+    <div class="row"><button class="btn" id="ws">نفّذ</button></div>
+    <div class="out" id="wo"></div>
+    <div class="err" id="we"></div>
+  </div>
+
+  <div class="panel card" id="analyze">
+    <label class="lbl">ارفع صورة أو ملفاً نصياً (txt, csv, md, json)</label>
+    <input type="file" id="af" accept="image/*,.txt,.csv,.md,.json">
+    <img class="pv" id="ap" hidden alt="">
+    <label class="lbl">ماذا تريد أن أفعل به؟</label>
+    <textarea id="aq" rows="2">اشرح لي محتوى هذا الملف بالتفصيل</textarea>
+    <div class="row"><button class="btn" id="as">حلّل</button></div>
+    <div class="out" id="ao"></div>
+    <div class="err" id="ae"></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const SYS = "أنت «محمد كود»، مساعد ذكاء اصطناعي ودود. أجب بالعربية الواضحة ما لم يكتب المستخدم بلغة أخرى، وكن موجزاً ومفيداً.";
+
+async function ask(messages, system){
+  const r = await fetch("/api/chat", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({messages, system: system || SYS})});
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(d.error || "error");
+  return d.text;
+}
+function fail(el, e){
+  el.textContent = e.message === "rate" ? "طلبات كثيرة، حاول بعد قليل." : "حدث خطأ، حاول مرة أخرى.";
+}
+document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.id===b.dataset.t));
+});
+
+/* دردشة */
+const hist = [];
+function addMsg(cls, t){
+  const d = document.createElement("div"); d.className = "m " + cls; d.textContent = t;
+  $("log").appendChild(d); $("log").scrollTop = 1e9; return d;
+}
+$("cs").onclick = async ()=>{
+  const t = $("ci").value.trim(); if(!t) return;
+  $("ce").textContent = ""; $("ci").value = "";
+  hist.push({role:"user", content:t});
+  addMsg("u", t); const bub = addMsg("b", "...");
+  $("cs").disabled = true;
+  try{
+    const r = await ask(hist);
+    bub.textContent = r; hist.push({role:"assistant", content:r});
+    $("log").scrollTop = 1e9;
+  }catch(e){ hist.pop(); bub.remove(); fail($("ce"), e); }
+  $("cs").disabled = false;
+};
+
+/* كتابة */
+$("ws").onclick = async ()=>{
+  const t = $("wi").value.trim(); if(!t) return;
+  $("we").textContent = ""; $("ws").disabled = true; $("wo").textContent = "...";
+  try{
+    $("wo").textContent = await ask([{role:"user", content: $("wm").value + ". أعطني النتيجة فقط دون مقدمات.\n\n" + t}]);
+  }catch(e){ $("wo").textContent = ""; fail($("we"), e); }
+  $("ws").disabled = false;
+};
+
+/* تحليل */
+const toB64 = f => new Promise((ok, no)=>{ const r = new FileReader(); r.onload = ()=>ok(r.result.split(",")[1]); r.onerror = no; r.readAsDataURL(f); });
+$("af").onchange = ()=>{
+  const f = $("af").files[0], p = $("ap");
+  if(f && f.type.startsWith("image/")){ p.src = URL.createObjectURL(f); p.hidden = false; } else p.hidden = true;
+};
+$("as").onclick = async ()=>{
+  const f = $("af").files[0]; $("ae").textContent = "";
+  if(!f){ $("ae").textContent = "اختر ملفاً أولاً."; return; }
+  if(f.size > 5*1024*1024){ $("ae").textContent = "الملف كبير، الحد الأقصى 5 ميغابايت."; return; }
+  $("as").disabled = true; $("ao").textContent = "...";
+  try{
+    const q = $("aq").value.trim() || "اشرح محتوى هذا الملف";
+    let content;
+    if(f.type.startsWith("image/")){
+      if(!["image/jpeg","image/png","image/gif","image/webp"].includes(f.type)) throw new Error("type");
+      content = [{type:"image", source:{type:"base64", media_type:f.type, data: await toB64(f)}}, {type:"text", text:q + "\n\nأجب بالعربية."}];
+    }else{
+      content = q + "\n\nأجب بالعربية. محتوى الملف:\n\n" + (await f.text()).slice(0, 60000);
+    }
+    $("ao").textContent = await ask([{role:"user", content}]);
+  }catch(e){ $("ao").textContent = ""; $("ae").textContent = e.message === "type" ? "صيغة الصورة غير مدعومة (استخدم JPG أو PNG)." : ""; if(!$("ae").textContent) fail($("ae"), e); }
+  $("as").disabled = false;
+};
+</script>
+</body>
+  </html>
